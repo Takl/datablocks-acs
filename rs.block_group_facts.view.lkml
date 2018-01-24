@@ -1,5 +1,5 @@
 view: rs_block_group_facts {
-  sql_table_name: datablocks_spectrum.fast_facts ;;
+  sql_table_name: looker_datablocks.fast_facts ;;
 
   dimension: logrecno_bg_map_block_group {
     hidden: yes

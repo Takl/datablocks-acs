@@ -1,3 +1,3 @@
-connection: "datablocks_spectrum"
+connection: "takl_bi_redshift"
 
 include: "rs.explore"
