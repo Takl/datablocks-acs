@@ -5,39 +5,41 @@ view: rs_zcta_distances {
         FROM
           looker_datablocks.zcta_distances
         WHERE
-          LPAD(CAST(zip1 AS VARCHAR),5, '0') = LPAD(CAST({% parameter zcta_distances.zip1 %} AS VARCHAR), 5, '0')
+          zip1 = {% parameter zcta_distances.zip1 %}
         UNION ALL
           SELECT
-            LPAD(CAST({% parameter zcta_distances.zip1 %} AS VARCHAR), 5, '0') as zip1,
-            LPAD(CAST({% parameter zcta_distances.zip1 %} AS VARCHAR), 5, '0') as zip2,
+            {% parameter zcta_distances.zip1 %} as zip1,
+            {% parameter zcta_distances.zip1 %} as zip2,
             0
           ;;
-    }
-
-    dimension: mi_to_zcta5 {
-      label: "Miles from selected ZIP"
-      view_label: "Geography"
-      group_label: "ZIP Radii"
-      type: number
-      sql: ${TABLE}.mi_to_zcta5 ;;
-      value_format_name: decimal_2
-    }
-
-    dimension: zip1 {
-      label: "Selected ZIP Code"
-      view_label: "Geography"
-      group_label: "ZIP Radii"
-      type: zipcode
-      sql: LPAD(CAST(${TABLE}.zip1 AS VARCHAR), 5, '0') ;;
-      suggestable: no
-    }
-
-    dimension: zip2 {
-      label: "Nearby ZIP"
-      view_label: "Geography"
-      group_label: "ZIP Radii"
-      type: zipcode
-      sql: LPAD(CAST(${TABLE}.zip2 AS VARCHAR), 5, '0') ;;
-      hidden: yes
-    }
   }
+
+  dimension: mi_to_zcta5 {
+    label: "Miles from selected ZIP"
+    view_label: "Geography"
+    group_label: "ZIP Radii"
+    type: number
+    sql: ${TABLE}.mi_to_zcta5 ;;
+    value_format_name: decimal_2
+    hidden: yes
+  }
+
+  dimension: zip1 {
+    label: "Selected ZIP Code"
+    view_label: "Geography"
+    group_label: "ZIP Radii"
+    type: zipcode
+    sql: ${TABLE}.zip1 ;;
+    suggestable: no
+    hidden: yes
+  }
+
+  dimension: zip2 {
+    label: "Nearby ZIP"
+    view_label: "Geography"
+    group_label: "ZIP Radii"
+    type: zipcode
+    sql: ${TABLE}.zip2 ;;
+    hidden: yes
+  }
+}
