@@ -1,9 +1,8 @@
 connection: "takl_bi_redshift"
 
-include: "rs.*.view.lkml"
+include: "*.view"
 
 explore: fast_facts {
-  group_label: "datablocks"
   from: rs_logrecno_bg_map
 
   join: block_group_facts {
@@ -24,5 +23,11 @@ explore: fast_facts {
     sql_on: ${tract_zcta_map.ZCTA5} = ${zcta_distances.zip2} ;;
     relationship: one_to_one
     required_joins: [tract_zcta_map]
+  }
+
+  join: zipcode {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${tract_zcta_map.ZCTA5} = ${zipcode.zip_code} ;;
   }
 }

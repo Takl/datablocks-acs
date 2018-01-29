@@ -1,11 +1,11 @@
 view: rs_logrecno_bg_map {
-    label: "Geography"
-    derived_table: {
-      sql:
+  label: "Geography"
+  derived_table: {
+    sql:
       SELECT
         UPPER(stusab) as stusab,
         logrecno,
-        UPPER(stusab) || logrecno::varchar as row_id,
+        CONCAT(UPPER(stusab), logrecno::varchar) as row_id,
         sumlevel,
         state as state_fips_code,
         county as county_fips_code,
@@ -47,13 +47,9 @@ view: rs_logrecno_bg_map {
       WHERE
         sumlevel in ('140','150')
       GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ;;
-      persist_for: "10000 hours"
-      distribution_style: all
+#     persist_for: "10000 hours"
+#     distribution_style: all
     }
-
-
-
-
     dimension: row_id {sql: ${TABLE}.row_id;;
       primary_key:yes
       hidden: yes
@@ -105,7 +101,8 @@ view: rs_logrecno_bg_map {
     dimension: county {
       group_label: "County"
       label: "County FIPS Code"
-      sql: ${state} || ${TABLE}.county_fips_code;;
+      sql: ${state} || ${TABLE}.county_fips_code ;;
+#     sql: CONCAT(${state}, ${TABLE}.county_fips_code);;
       map_layer_name: us_counties_fips
       drill_fields: [tract, block_group]
       suggest_persist_for: "120 hours"
@@ -113,7 +110,8 @@ view: rs_logrecno_bg_map {
 
     dimension: county_name {
       group_label: "County"
-      sql: ${TABLE}.county_name || ', ' || ${state_name};;
+      sql: ${TABLE}.county_name || ', ' || ${state_name} ;;
+#     sql: CONCAT(${TABLE}.county_name, ', ', ${state_name});;
       link: {
         url: "https://maps.google.com?q={{value}}"
         label: "Google Maps"
@@ -138,7 +136,8 @@ view: rs_logrecno_bg_map {
     }
 
     dimension: tract_name {
-      sql: ${TABLE}.tract_name || ', ' || ${county_name};;
+      sql: ${TABLE}.tract_name || ', ' || ${county_name}  ;;
+#     sql: CONCAT(${TABLE}.tract_name, ', ', ${county_name});;
       group_label: "Tract"
       link: {
         url: "https://google.com?q={{value}}"
@@ -156,9 +155,7 @@ view: rs_logrecno_bg_map {
     # Block Group
 
     dimension: block_group {
-      type: number
-      sql: SUBSTRING(${TABLE}.geoid, 8, 12)::bigint ;;
-      value_format_name: id
+      sql: SUBSTRING(${TABLE}.geoid, 8, 12);;
       group_label: "Block Group"
       label: "Block Group Geo Code"
       map_layer_name: block_group
@@ -167,10 +164,11 @@ view: rs_logrecno_bg_map {
         label: "Google"
       }
       suggest_persist_for: "120 hours"
-  }
+    }
 
     dimension: block_group_name {
-      sql: ${TABLE}.block_group_name || ', ' || ${tract_name} ;;
+      sql: ${TABLE}.block_group_name || ', ' || ${tract_name}  ;;
+#     sql: CONCAT(${TABLE}.block_group_name, ', ', ${tract_name}) ;;
       group_label: "Block Group"
       suggest_persist_for: "120 hours"
     }
