@@ -3,6 +3,7 @@ connection: "takl_bi_redshift"
 include: "*.view"
 
 explore: fast_facts {
+  group_label: "datablocks"
   from: rs_logrecno_bg_map
 
   join: block_group_facts {
