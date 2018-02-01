@@ -3,7 +3,6 @@ include: "rs.*.view.lkml"
 
 explore: fast_facts {
   group_label: "datablocks"
-  label: "rs"
   from: rs_logrecno_bg_map
 
   join: block_group_facts {
