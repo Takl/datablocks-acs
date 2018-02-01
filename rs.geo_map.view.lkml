@@ -73,7 +73,7 @@ view: rs_logrecno_bg_map {
 
     dimension: state_name {
       group_label: "State"
-      map_layer_name: us_states
+#       map_layer_name: us_states
       sql: ${TABLE}.state_name;;
       link: {
         url: "https://maps.google.com?q={{value}}"
@@ -103,7 +103,7 @@ view: rs_logrecno_bg_map {
       label: "County FIPS Code"
       sql: ${state} || ${TABLE}.county_fips_code ;;
 #     sql: CONCAT(${state}, ${TABLE}.county_fips_code);;
-      map_layer_name: us_counties_fips
+#       map_layer_name: us_counties_fips
       drill_fields: [tract, block_group]
       suggest_persist_for: "120 hours"
     }
@@ -131,7 +131,7 @@ view: rs_logrecno_bg_map {
       label: "Tract Geo Code"
       group_label: "Tract"
       sql: ${TABLE}.geoid11 ;;
-      map_layer_name: tract
+#       map_layer_name: tract
       suggest_persist_for: "120 hours"
     }
 
@@ -158,7 +158,7 @@ view: rs_logrecno_bg_map {
       sql: SUBSTRING(${TABLE}.geoid, 8, 12);;
       group_label: "Block Group"
       label: "Block Group Geo Code"
-      map_layer_name: block_group
+#       map_layer_name: block_group
       link: {
         url: "https://google.com?q={{value}}"
         label: "Google"
